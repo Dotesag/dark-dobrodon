@@ -4,9 +4,11 @@ import { SparklesIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { use } from "react";
 
-export default function EditUserPage({ params }: { params: { id: string } }) {
+export default function EditUserPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
+  const unwrappedParams = use(params);
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
@@ -15,11 +17,9 @@ export default function EditUserPage({ params }: { params: { id: string } }) {
     }
   }, [router]);
 
-
-
   // В реальном приложении данные будут загружаться из API
   const user = {
-    id: parseInt(params.id),
+    id: parseInt(unwrappedParams.id),
     name: "Иван Петров",
     email: "ivan@example.com",
     role: "volunteer",
@@ -118,4 +118,4 @@ export default function EditUserPage({ params }: { params: { id: string } }) {
       </main>
     </div>
   );
-} 
+}

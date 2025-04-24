@@ -84,7 +84,7 @@ export const OrganizationLoginForm = () => {
         
         // Сохраняем токен в localStorage
         localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('userRole', 'organization');
+        localStorage.setItem('userRole', data.role === 3 ? 'admin' : 'organization');
         
         router.push("/");
       } catch (error) {
@@ -194,4 +194,4 @@ export const OrganizationLoginForm = () => {
       </div>
     </div>
   );
-}; 
+};
