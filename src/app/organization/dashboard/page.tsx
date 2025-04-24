@@ -45,7 +45,6 @@ interface QRCodeData {
   created_by: string;
   rating: number;
   message: string;
-  id: number;
 }
 
 const mockOrganization: Organization = {
@@ -145,15 +144,15 @@ export default function OrganizationDashboard() {
     }
   }, [router]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const data = await fetchQrHashData();
-      setQrData(data);
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     const data = await fetchQrHashData();
+  //     setQrData(data);
+  //     setLoading(false);
+  //   };
 
-    loadData();
-  }, []);
+  //   loadData();
+  // }, []);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
@@ -864,7 +863,7 @@ export default function OrganizationDashboard() {
                         <p className="text-sm text-gray-600"><span className="font-medium">Создан:</span> {scanResult.created_at}</p>
                         <p className="text-sm text-gray-600"><span className="font-medium">Создатель:</span> {scanResult.created_by}</p>
                         <p className="text-sm text-gray-600"><span className="font-medium">Рейтинг:</span> {scanResult.rating}</p>
-                        <p className="text-sm text-gray-600"><span className="font-medium">ID:</span> {scanResult.id}</p>
+                        {/* <p className="text-sm text-gray-600"><span className="font-medium">ID:</span> {scanResult.id}</p> */}
                         <p className="text-sm text-gray-600"><span className="font-medium">Сообщение:</span> {scanResult.message}</p>
                       </div>
                     </div>
