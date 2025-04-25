@@ -45,6 +45,7 @@ interface QRCodeData {
   created_by: string;
   rating: number;
   message: string;
+  id: number;
 }
 
 const mockOrganization: Organization = {
@@ -144,15 +145,15 @@ export default function OrganizationDashboard() {
     }
   }, [router]);
 
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     const data = await fetchQrHashData();
-  //     setQrData(data);
-  //     setLoading(false);
-  //   };
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await fetchQrHashData();
+      setQrData(data);
+      setLoading(false);
+    };
 
-  //   loadData();
-  // }, []);
+    loadData();
+  }, []);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
@@ -402,6 +403,28 @@ export default function OrganizationDashboard() {
               <h1 className="text-3xl font-bold text-gray-900">{organization.name}</h1>
               <p className="mt-1 text-sm text-gray-500">Добро пожаловать, {organization.name}</p>
             </div>
+
+            {/* Кнопка "Вернуться" */}
+            <button
+              type="button"
+              onClick={() => router.push("/")}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200"
+            >
+              <svg
+                className="h-5 w-5 mr-2 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Вернуться в главное меню
+            </button>
           </div>
         </div>
       </header>
@@ -863,7 +886,7 @@ export default function OrganizationDashboard() {
                         <p className="text-sm text-gray-600"><span className="font-medium">Создан:</span> {scanResult.created_at}</p>
                         <p className="text-sm text-gray-600"><span className="font-medium">Создатель:</span> {scanResult.created_by}</p>
                         <p className="text-sm text-gray-600"><span className="font-medium">Рейтинг:</span> {scanResult.rating}</p>
-                        {/* <p className="text-sm text-gray-600"><span className="font-medium">ID:</span> {scanResult.id}</p> */}
+                        <p className="text-sm text-gray-600"><span className="font-medium">ID:</span> {scanResult.id}</p>
                         <p className="text-sm text-gray-600"><span className="font-medium">Сообщение:</span> {scanResult.message}</p>
                       </div>
                     </div>
