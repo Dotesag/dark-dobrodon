@@ -133,6 +133,16 @@ export default function ImportPage() {
             >
               {isLoading ? 'Загрузка...' : 'Загрузить файл'}
             </button>
+
+            <div className="text-center">
+            <button
+              type="button"
+              onClick={() => router.push("/")}
+              className="text-sm text-gray-600 hover:text-gray-800 font-medium transition duration-200"
+            >
+              ← Вернуться в главное меню
+            </button>
+          </div>
           </form>
         </div>
       </div>

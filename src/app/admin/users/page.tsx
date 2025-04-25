@@ -1,47 +1,43 @@
-"use client"
+"use client";
 
 import { SparklesIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import axios from "axios";
+import { API_ADRESS } from "@/lib/api/config";
 
 export default function AdminUsersPage() {
   const router = useRouter();
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     if (userRole !== "admin") {
       router.push("/");
+      return;
     }
+
+    const fetchUsers = async () => {
+      try {
+        const { data } = await axios.get(
+          `${API_ADRESS}/people`,
+          { headers: { Accept: 'application/json' } }
+        );
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        alert("Не удалось загрузить пользователей");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
   }, [router]);
 
-
-
-  // Пример данных - в реальном приложении они будут приходить из API
-  const users = [
-    {
-      id: 1,
-      name: "Иван Петров",
-      email: "ivan@example.com",
-      role: "volunteer",
-      registrationDate: "2024-01-15"
-    },
-    {
-      id: 2,
-      name: "ООО Помощь",
-      email: "help@example.com",
-      role: "organization",
-      registrationDate: "2024-01-10"
-    },
-    {
-      id: 3,
-      name: "Алексей Сидоров",
-      email: "alex@example.com",
-      role: "volunteer",
-      registrationDate: "2024-01-20"
-    }
-  ];
+  if (loading) return <div>Загрузка...</div>;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,7 +75,6 @@ export default function AdminUsersPage() {
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Пользователь</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Роль</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата регистрации</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
                 </tr>
               </thead>
@@ -89,24 +84,21 @@ export default function AdminUsersPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div>
-                          <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                          <div className="text-sm font-medium text-gray-900">{user.full_name}</div>
                           <div className="text-sm text-gray-500">{user.email}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        user.role === 'volunteer' ? 'bg-green-100 text-green-800' : 
-                        user.role === 'organization' ? 'bg-blue-100 text-blue-800' : 
+                        user.role === "volunteer" ? 'bg-green-100 text-green-800' : 
+                        user.role === 1 ? 'bg-blue-100 text-blue-800' : 
                         'bg-gray-100 text-gray-800'
                       }`}>
-                        {user.role === 'volunteer' ? 'Волонтер' : 
-                         user.role === 'organization' ? 'Организация' : 
+                        {user.role === "volunteer" ? 'Волонтер' : 
+                         user.role === 1 ? 'Организация' : 
                          'Администратор'}
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(user.registrationDate).toLocaleDateString('ru-RU')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <Link href={`/admin/users/${user.id}/edit`} className="text-blue-600 hover:text-blue-900 mr-3">
@@ -123,4 +115,4 @@ export default function AdminUsersPage() {
       </main>
     </div>
   );
-} 
+}
